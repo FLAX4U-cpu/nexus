@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS STUDIO | Next-Gen Web Design & Digital Solutions</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Inter & Hind Siliguri (for crisp Bengali typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Hind Siliguri', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#030305',
+                            900: '#09090b',
+                            800: '#121217',
+                            700: '#1c1c24',
+                        },
+                        brand: {
+                            indigo: '#6366f1',
+                            violet: '#8b5cf6',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'gradient-x': 'gradient-x 8s ease infinite',
+                        'aurora': 'aurora 14s ease-in-out infinite',
+                        'marquee': 'marquee 24s linear infinite',
+                        'shimmer': 'shimmer 2.6s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-18px) rotate(1deg)' },
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        aurora: {
+                            '0%, 100%': { transform: 'translate3d(0px, 0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate3d(28px, -22px, 0px) scale(1.08)' },
+                            '66%': { transform: 'translate3d(-22px, 18px, 0px) scale(0.95)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        shimmer: {
+                            '0%': { transform: 'translateX(-120%) skewX(-18deg)' },
+                            '100%': { transform: 'translateX(220%) skewX(-18deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom High-End Animations & Glassmorphism */
+        body {
+            background-color: #030305;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030305;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* Cursor Follower Glow */
+        #cursor-glow {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.14) 0%, rgba(139, 92, 246, 0.05) 45%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Animated Gradient Border */
+        .gradient-border-box {
+            position: relative;
+            background: #0c0c10;
+            border-radius: 1.25rem;
+            z-index: 1;
+        }
+        .gradient-border-box::before {
+            content: "";
+            position: absolute;
+            inset: -1.5px;
+            border-radius: 1.35rem;
+            padding: 1.5px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6, #6366f1);
+            background-size: 300% 300%;
+            animation: borderGradient 5s ease infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+
+        @keyframes borderGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3D Tilt Card Setup */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+        }
+        .tilt-card-inner {
+            transform: translateZ(25px);
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typing Cursor Blink */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: #06b6d4;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Grid Pattern Overlay */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Scroll Progress Bar & Magnetic Motion */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #6366f1, #06b6d4, #10b981);
+            z-index: 60;
+            transition: width 0.08s linear;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.65);
+        }
+
+        .magnetic-btn {
+            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        .shimmer-sweep {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-sweep::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 45%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+            animation: shimmer 3.2s infinite;
+            pointer-events: none;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Mobile-first spacing & overflow compression */
+        @media (max-width: 639px) {
+            html, body {
+                max-width: 100vw;
+                overflow-x: clip;
+            }
+            .bg-grid-pattern {
+                background-size: 28px 28px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Ambient Cursor Glow -->
+    <div id="cursor-glow" class="hidden md:block"></div>
+
+    <!-- Top Scroll Progress Indicator -->
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Navigation Bar -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+                        <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">NEXUS</span>
+                        <span class="text-xs font-bold tracking-widest text-cyan-400 block -mt-1">STUDIO</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                    <a href="#services" class="hover:text-white transition-colors" data-en="Services" data-bn="সার্ভিসসমূহ">Services</a>
+                    <a href="#appointment" class="hover:text-white transition-colors" data-en="Book Appointment" data-bn="অ্যাপয়েন্টমেন্ট">Book Appointment</a>
+                </nav>
+
+                <!-- Right Actions: Language Toggle & Appointment CTA -->
+                <div class="flex items-center gap-3">
+                    <!-- Admin Panel Button -->
+                    <button type="button" onclick="openAdminModal()" class="relative px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-1.5 transition-all" title="Admin Panel">
+                        <i data-lucide="shield" class="w-4 h-4 text-indigo-400"></i>
+                        <span class="hidden sm:inline" data-en="Admin" data-bn="অ্যাডমিন">Admin</span>
+                        <span id="admin-booking-badge" class="px-1.5 py-0.5 rounded-full bg-indigo-600 text-white text-[10px] font-bold leading-none">0</span>
+                    </button>
+
+                    <!-- Language Switcher -->
+                    <button id="lang-toggle" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-1.5 transition-all">
+                        <i data-lucide="globe" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        <span id="lang-label">বাংলা</span>
+                    </button>
+
+                    <!-- Appointment Button -->
+                    <button type="button" onclick="openAppointmentModal()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                        <span data-en="Book Appointment" data-bn="অ্যাপয়েন্টমেন্ট নিন">Book Appointment</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white">
+                        <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-xl border-b border-white/10 px-4 pt-2 pb-6 space-y-3">
+            <a href="#services" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-slate-300 hover:text-white" data-en="Services" data-bn="সার্ভিসসমূহ">Services</a>
+            <a href="#appointment" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-slate-300 hover:text-white" data-en="Book Appointment" data-bn="অ্যাপয়েন্টমেন্ট">Book Appointment</a>
+            <button type="button" onclick="toggleMobileMenu(); openAdminModal();" class="w-full py-2.5 px-4 rounded-xl bg-white/5 border border-white/10 text-left text-sm font-semibold text-indigo-300 flex items-center justify-between">
+                <span class="flex items-center gap-2"><i data-lucide="shield" class="w-4 h-4"></i> <span data-en="Admin Bookings Panel" data-bn="অ্যাডমিন বুকিং প্যানেল">Admin Bookings Panel</span></span>
+                <span id="mobile-admin-badge" class="px-2 py-0.5 rounded-full bg-indigo-600 text-white text-xs font-bold">0</span>
+            </button>
+            <div class="grid grid-cols-2 gap-2.5 pt-2">
+                <button type="button" onclick="toggleMobileMenu(); openAppointmentModal();" class="py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-semibold text-center shadow-lg flex items-center justify-center gap-1.5">
+                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                    <span data-en="Appointment" data-bn="অ্যাপয়েন্টমেন্ট">Appointment</span>
+                </button>
+                <a href="https://wa.me/919674159123?text=Hello!%20I%20want%20to%20discuss%20a%20website%20project." target="_blank" rel="noopener" class="py-3 rounded-xl bg-emerald-600 text-white text-sm font-semibold text-center shadow-lg flex items-center justify-center gap-1.5">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span data-en="WhatsApp" data-bn="হোয়াটসঅ্যাপ">WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION WITH INTERACTIVE PARTICLE CANVAS -->
+    <section class="relative min-h-0 lg:min-h-screen flex items-center pt-20 pb-10 sm:pt-24 sm:pb-16 overflow-hidden bg-grid-pattern">
+        <!-- Interactive Canvas Background -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+        <!-- Ambient Radial Glows -->
+        <div class="absolute top-1/4 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-[128px] pointer-events-none animate-aurora"></div>
+        <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-cyan-500/15 rounded-full blur-[128px] pointer-events-none animate-float-delayed"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-violet-600/10 rounded-full blur-[130px] pointer-events-none animate-pulse-slow"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="grid lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-12 items-center">
+                <!-- Left Hero Content -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-4 sm:space-y-6">
+                    <!-- Top Pill Badge -->
+                    <div class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-[11px] sm:text-sm font-medium text-cyan-300 shadow-inner">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+                        </span>
+                        <span data-en="Available for Custom Projects & Ready-to-Launch Sites" data-bn="কাস্টম ও রেডিমেড ওয়েবসাইট বিক্রয় চলছে">Available for Custom Projects & Ready-to-Launch Sites</span>
+                    </div>
+
+                    <!-- Kinetic Headline -->
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12]">
+                        <span class="block text-white" data-en="We Build Next-Gen" data-bn="আপনার ব্যবসার জন্য">We Build Next-Gen</span>
+                        <span class="block mt-1 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-cyan-300 to-violet-400 animate-gradient-x typing-cursor" id="typing-text">E-Commerce Websites</span>
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-sm sm:text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-en="Transform your business with ultra-fast, high-converting, animated websites. Book a 1-on-1 consultation appointment or chat with us directly on WhatsApp to launch your website." data-bn="আধুনিক ডিজাইন, হাই-স্পিড পারফরম্যান্স এবং প্রিমিয়াম অ্যানিমেশনসহ আপনার স্বপ্নের ওয়েবসাইট তৈরি করুন। আজই অ্যাপয়েন্টমেন্ট বুক করুন অথবা সরাসরি হোয়াটসঅ্যাপে কথা বলুন।">
+                        Transform your business with ultra-fast, high-converting, animated websites. Book a 1-on-1 consultation appointment or chat with us directly on WhatsApp to launch your website.
+                    </p>
+
+                    <!-- Dual CTA Buttons: Book Appointment & WhatsApp Chat Only -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-4 pt-1 sm:pt-2">
+                        <button type="button" onclick="openAppointmentModal()" class="magnetic-btn shimmer-sweep w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] hover:bg-right text-white font-bold text-sm sm:text-base shadow-xl shadow-indigo-600/30 transition-all duration-500 flex items-center justify-center gap-2 group">
+                            <i data-lucide="calendar-check" class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-6 transition-transform"></i>
+                            <span data-en="Book Appointment" data-bn="অ্যাপয়েন্টমেন্ট বুক করুন">Book Appointment</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        <a href="https://wa.me/919674159123?text=Hello%20Nexus%20Studio!%20I%20would%20like%20to%20discuss%20building%20a%20website." target="_blank" rel="noopener" class="magnetic-btn w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 backdrop-blur-md text-emerald-300 font-bold text-sm sm:text-base transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10 group">
+                            <i data-lucide="message-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                            <span data-en="WhatsApp Chat" data-bn="হোয়াটসঅ্যাপ চ্যাট">WhatsApp Chat</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust Metrics -->
+                    <div class="grid grid-cols-3 gap-2.5 sm:gap-4 pt-4 sm:pt-6 border-t border-white/10 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <div class="text-xl sm:text-3xl font-extrabold text-white counter" data-target="150">0</div>
+                            <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5" data-en="Sites Delivered" data-bn="ওয়েবসাইট ডেলিভারি">Sites Delivered</div>
+                        </div>
+                        <div>
+                            <div class="text-xl sm:text-3xl font-extrabold text-cyan-400">99.9%</div>
+                            <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5" data-en="Speed Score" data-bn="স্পিড স্কোর">Speed Score</div>
+                        </div>
+                        <div>
+                            <div class="text-xl sm:text-3xl font-extrabold text-indigo-400">24/7</div>
+                            <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5" data-en="VIP Support" data-bn="কাস্টমার সাপোর্ট">VIP Support</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Floating 3D UI Mockup Showcase -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-sm sm:max-w-md lg:max-w-none">
+                        <!-- Main Floating Dashboard Card -->
+                        <div class="gradient-border-box p-4 sm:p-5 shadow-2xl shadow-indigo-500/20 animate-float">
+                            <!-- Top Window Controls -->
+                            <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/10">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                </div>
+                                <div class="px-2.5 py-1 rounded-md bg-white/5 text-[10px] sm:text-[11px] font-mono text-slate-400 truncate max-w-[150px] sm:max-w-none">
+                                    https://yourbrand.com
+                                </div>
+                                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                            </div>
+
+                            <!-- Mockup Content -->
+                            <div class="py-4 sm:py-5 space-y-3 sm:space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-[11px] sm:text-xs text-slate-400">Monthly Conversion Growth</p>
+                                        <h3 class="text-xl sm:text-2xl font-bold text-white">+348.5%</h3>
+                                    </div>
+                                    <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-semibold flex items-center gap-1">
+                                        <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Live
+                                    </span>
+                                </div>
+
+                                <!-- Animated Bars Visual -->
+                                <div class="grid grid-cols-7 gap-1.5 sm:gap-2 items-end h-24 sm:h-28 pt-3 sm:pt-4 px-2 bg-white/[0.02] rounded-xl border border-white/5">
+                                    <div class="bg-indigo-500/40 rounded-t-md h-[40%] animate-pulse"></div>
+                                    <div class="bg-indigo-500/60 rounded-t-md h-[60%]"></div>
+                                    <div class="bg-indigo-500/80 rounded-t-md h-[50%]"></div>
+                                    <div class="bg-violet-500 rounded-t-md h-[78%]"></div>
+                                    <div class="bg-cyan-500 rounded-t-md h-[68%]"></div>
+                                    <div class="bg-gradient-to-t from-indigo-600 to-cyan-400 rounded-t-md h-[95%] shadow-lg shadow-cyan-500/30"></div>
+                                    <div class="bg-gradient-to-t from-violet-600 to-fuchsia-400 rounded-t-md h-[88%]"></div>
+                                </div>
+
+                                <!-- Feature Pills -->
+                                <div class="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
+                                    <div class="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2 sm:gap-2.5">
+                                        <div class="p-1.5 sm:p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
+                                            <i data-lucide="rocket" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs font-bold text-white">0.4s Load</div>
+                                            <div class="text-[10px] text-slate-400">Ultra Fast</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2 sm:gap-2.5">
+                                        <div class="p-1.5 sm:p-2 rounded-lg bg-indigo-500/20 text-indigo-400">
+                                            <i data-lucide="smartphone" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs font-bold text-white">100% Mobile</div>
+                                            <div class="text-[10px] text-slate-400">Responsive</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Floating Badge Card -->
+                        <div class="hidden sm:flex items-center gap-3 p-3.5 rounded-2xl bg-dark-800/90 backdrop-blur-xl border border-white/15 shadow-2xl absolute -bottom-6 -left-6 animate-float-delayed">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">SEO & SSL Ready</div>
+                                <div class="text-[11px] text-slate-400">Google Rank Optimized</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANIMATED CAPABILITIES MARQUEE STRIP -->
+    <div class="py-3 sm:py-4 border-y border-white/10 bg-dark-900/70 backdrop-blur-md overflow-hidden select-none">
+        <div class="marquee-track flex w-max animate-marquee items-center gap-6 sm:gap-10 text-xs sm:text-sm font-semibold text-slate-300">
+            <div class="flex items-center gap-6 sm:gap-10">
+                <span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> 60FPS Motion UI</span>
+                <span class="inline-flex items-center gap-2 text-indigo-300"><i data-lucide="sparkles" class="w-4 h-4"></i> Custom E-Commerce</span>
+                <span class="inline-flex items-center gap-2 text-emerald-300"><i data-lucide="zap" class="w-4 h-4"></i> Instant WhatsApp Lead Flow</span>
+                <span class="inline-flex items-center gap-2 text-violet-300"><i data-lucide="smartphone" class="w-4 h-4"></i> Mobile-First Precision</span>
+                <span class="inline-flex items-center gap-2 text-amber-300"><i data-lucide="shield-check" class="w-4 h-4"></i> SEO & Performance Ready</span>
+            </div>
+            <div class="flex items-center gap-6 sm:gap-10" aria-hidden="true">
+                <span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> 60FPS Motion UI</span>
+                <span class="inline-flex items-center gap-2 text-indigo-300"><i data-lucide="sparkles" class="w-4 h-4"></i> Custom E-Commerce</span>
+                <span class="inline-flex items-center gap-2 text-emerald-300"><i data-lucide="zap" class="w-4 h-4"></i> Instant WhatsApp Lead Flow</span>
+                <span class="inline-flex items-center gap-2 text-violet-300"><i data-lucide="smartphone" class="w-4 h-4"></i> Mobile-First Precision</span>
+                <span class="inline-flex items-center gap-2 text-amber-300"><i data-lucide="shield-check" class="w-4 h-4"></i> SEO & Performance Ready</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES SECTION WITH 3D TILT CARDS -->
+    <section id="services" class="py-12 sm:py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-9 sm:mb-16 reveal">
+                <span class="text-xs font-bold uppercase tracking-widest text-cyan-400" data-en="Why Choose Us" data-bn="আমাদের বিশেষত্ব">Why Choose Us</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1.5 sm:mt-2" data-en="High-Tech Web Solutions Built to Sell" data-bn="ব্যবসা বৃদ্ধির জন্য আধুনিক ওয়েব সলিউশন">High-Tech Web Solutions Built to Sell</h2>
+                <p class="text-slate-400 mt-2 sm:mt-3 text-xs sm:text-base" data-en="Every website we build combines interactive 60fps animations, conversion psychology, and rock-solid performance." data-bn="আমাদের তৈরি প্রতিটি ওয়েবসাইটে থাকে স্মুথ অ্যানিমেশন, আকর্ষণীয় ডিজাইন এবং দ্রুত লোডিং স্পিড।">
+                    Every website we build combines interactive 60fps animations, conversion psychology, and rock-solid performance.
+                </p>
+            </div>
+
+            <!-- 4 Service Tilt Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+                <!-- Service 1 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/60 border border-white/10 p-4 sm:p-6 hover:border-indigo-500/50 hover:bg-dark-800 transition-colors group">
+                    <div class="tilt-card-inner space-y-2.5 sm:space-y-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="sparkles" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold text-white" data-en="Custom Animated Web" data-bn="কাস্টম অ্যানিমেটেড ওয়েবসাইট">Custom Animated Web</h3>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" data-en="Bespoke websites with interactive particle effects, smooth scroll reveals, and modern UI." data-bn="আকর্ষণীয় অ্যানিমেশন এবং মডার্ন ডিজাইনের মাধ্যমে আপনার ব্র্যান্ডকে সবার থেকে আলাদা করুন।">
+                            Bespoke websites with interactive particle effects, smooth scroll reveals, and modern UI.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/60 border border-white/10 p-4 sm:p-6 hover:border-cyan-500/50 hover:bg-dark-800 transition-colors group">
+                    <div class="tilt-card-inner space-y-2.5 sm:space-y-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="shopping-bag" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold text-white" data-en="E-Commerce Stores" data-bn="ই-কমার্স ওয়েবসাইট">E-Commerce Stores</h3>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" data-en="Complete online stores with cart, checkout, payment gateway integration & inventory." data-bn="অনলাইনে পণ্য বিক্রির জন্য পেমেন্ট গেটওয়ে ও অর্ডার ম্যানেজমেন্টসহ পূর্ণাঙ্গ ই-কমার্স সাইট।">
+                            Complete online stores with cart, checkout, payment gateway integration & inventory.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/60 border border-white/10 p-4 sm:p-6 hover:border-violet-500/50 hover:bg-dark-800 transition-colors group">
+                    <div class="tilt-card-inner space-y-2.5 sm:space-y-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="gauge" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold text-white" data-en="Ultra-Fast SEO" data-bn="হাই-স্পিড ও এসইও">Ultra-Fast SEO</h3>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" data-en="Optimized for Google Core Web Vitals so your website loads instantly and ranks higher." data-bn="গুগল সার্চে শীর্ষে থাকার জন্য এসইও ফ্রেন্ডলি কোড এবং সুপার ফাস্ট লোডিং স্পিড।">
+                            Optimized for Google Core Web Vitals so your website loads instantly and ranks higher.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/60 border border-white/10 p-4 sm:p-6 hover:border-emerald-500/50 hover:bg-dark-800 transition-colors group">
+                    <div class="tilt-card-inner space-y-2.5 sm:space-y-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="headphones" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold text-white" data-en="Domain, Hosting & Care" data-bn="ডোমেইন, হোস্টিং ও সাপোর্ট">Domain, Hosting & Care</h3>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" data-en="End-to-end setup including free SSL security, cloud hosting, and dedicated support." data-bn="ডোমেইন ও হোস্টিং সেটআপ থেকে শুরু করে যেকোনো সমস্যায় পাচ্ছেন সার্বক্ষণিক সাপোর্ট।">
+                            End-to-end setup including free SSL security, cloud hosting, and dedicated support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLIENT RATINGS & REVIEWS (INDIAN NAMES) -->
+    <section id="ratings" class="py-12 sm:py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-14 reveal">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400" data-en="Client Ratings" data-bn="ক্লায়েন্ট রেটিং ও রিভিউ">Client Ratings</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1.5 sm:mt-2" data-en="Trusted by Growing Indian Businesses" data-bn="ক্লায়েন্টদের বিশ্বস্ত রেটিং ও মতামত">Trusted by Growing Indian Businesses</h2>
+                <div class="mt-3 sm:mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs sm:text-sm">
+                    <span class="flex items-center gap-1 text-amber-400 font-bold">
+                        <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
+                        4.9 / 5.0
+                    </span>
+                    <span class="text-slate-500">•</span>
+                    <span class="text-slate-300 text-xs" data-en="Based on verified website launches" data-bn="ভেরিফায়েড ওয়েবসাইট ডেলিভারির ভিত্তিতে">Based on verified website launches</span>
+                </div>
+            </div>
+
+            <!-- Ratings Grid -->
+            <div class="grid md:grid-cols-3 gap-3.5 sm:gap-6">
+                <!-- Rating 1 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/70 border border-white/10 p-4 sm:p-6 hover:border-amber-400/40 transition-all flex flex-col justify-between space-y-4 sm:space-y-5">
+                    <div class="tilt-card-inner space-y-3 sm:space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1 text-amber-400">
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            </div>
+                            <span class="text-xs font-bold text-amber-300">5.0 ★</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" data-en="“Nexus Studio built our animated e-commerce website right on schedule. The animations are super smooth and customer inquiries doubled within weeks.”" data-bn="“আমাদের ই-কমার্স ওয়েবসাইটটি দারুণ অ্যানিমেশন ও স্পিডসহ ডেলিভারি করেছে। কয়েক সপ্তাহের মধ্যেই কাস্টমার ইনকোয়ারি দ্বিগুণ হয়েছে।”">
+                            “Nexus Studio built our animated e-commerce website right on schedule. The animations are super smooth and customer inquiries doubled within weeks.”
+                        </p>
+                    </div>
+                    <div class="tilt-card-inner pt-3 sm:pt-4 border-t border-white/10 flex items-center gap-3">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
+                            AR
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Arijit Roy</div>
+                            <div class="text-xs text-slate-400">Kolkata, West Bengal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating 2 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/70 border border-white/10 p-4 sm:p-6 hover:border-amber-400/40 transition-all flex flex-col justify-between space-y-4 sm:space-y-5">
+                    <div class="tilt-card-inner space-y-3 sm:space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1 text-amber-400">
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            </div>
+                            <span class="text-xs font-bold text-amber-300">5.0 ★</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" data-en="“Booking a consultation was effortless and WhatsApp communication was quick and clear. Our brand website looks modern on both mobile and desktop.”" data-bn="“অ্যাপয়েন্টমেন্ট বুক করা ও হোয়াটসঅ্যাপে যোগাযোগ ছিল খুবই সহজ ও দ্রুত। মোবাইল ও ডেস্কটপ দুই জায়গাতেই সাইটটি দারুণ কাজ করে।”">
+                            “Booking a consultation was effortless and WhatsApp communication was quick and clear. Our brand website looks modern on both mobile and desktop.”
+                        </p>
+                    </div>
+                    <div class="tilt-card-inner pt-3 sm:pt-4 border-t border-white/10 flex items-center gap-3">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-500 flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
+                            PS
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Priyanka Sharma</div>
+                            <div class="text-xs text-slate-400">Bengaluru, Karnataka</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating 3 -->
+                <div class="tilt-card reveal rounded-2xl bg-dark-800/70 border border-white/10 p-4 sm:p-6 hover:border-amber-400/40 transition-all flex flex-col justify-between space-y-4 sm:space-y-5">
+                    <div class="tilt-card-inner space-y-3 sm:space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1 text-amber-400">
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400/40"></i>
+                            </div>
+                            <span class="text-xs font-bold text-amber-300">4.8 ★</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" data-en="“Great attention to detail with interactive effects and fast page speed. Their support team helped us customize every section cleanly.”" data-bn="“ইন্টারেক্টিভ ডিজাইন ও ফাস্ট লোডিং স্পিডের জন্য দারুণ অভিজ্ঞতা। প্রতিটি সেকশন কাস্টমাইজ করতে সাপোর্ট টিম খুব সাহায্য করেছে।”">
+                            “Great attention to detail with interactive effects and fast page speed. Their support team helped us customize every section cleanly.”
+                        </p>
+                    </div>
+                    <div class="tilt-card-inner pt-3 sm:pt-4 border-t border-white/10 flex items-center gap-3">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
+                            RV
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Rohan Verma</div>
+                            <div class="text-xs text-slate-400">Mumbai, Maharashtra</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPOINTMENT BOOKING & WHATSAPP CONSULTATION SECTION (ALL PRICING REMOVED) -->
+    <section id="appointment" class="py-12 sm:py-24 relative overflow-hidden">
+        <!-- Ambient Background Glows -->
+        <div class="absolute top-1/3 left-0 w-80 h-80 bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-14 reveal">
+                <span class="text-xs font-bold uppercase tracking-widest text-cyan-400" data-en="Direct Consultation" data-bn="সরাসরি পরামর্শ ও বুকিং">Direct Consultation</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1.5 sm:mt-2" data-en="Book an Appointment or Chat on WhatsApp" data-bn="অ্যাপয়েন্টমেন্ট বুক করুন অথবা হোয়াটসঅ্যাপে কথা বলুন">Book an Appointment or Chat on WhatsApp</h2>
+                <p class="text-slate-400 mt-2 sm:mt-3 text-xs sm:text-base" data-en="Click below to schedule your 1-on-1 consultation slot or start an instant conversation on WhatsApp." data-bn="নিচের বাটনে ক্লিক করে আপনার ১-অন-১ অ্যাপয়েন্টমেন্ট বুক করুন অথবা সরাসরি হোয়াটসঅ্যাপে মেসেজ দিন।">
+                    Click below to schedule your 1-on-1 consultation slot or start an instant conversation on WhatsApp.
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto reveal">
+                <!-- Info & Action Card (Form opens on click) -->
+                <div class="rounded-2xl sm:rounded-3xl bg-dark-800/80 border border-white/10 p-5 sm:p-10 space-y-4 sm:space-y-6 shadow-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-[11px] sm:text-xs font-bold">
+                        <i data-lucide="video" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                        <span data-en="Free 1-on-1 Project Discovery Call" data-bn="ফ্রি ১-অন-১ প্রজেক্ট কনসালটেশন">Free 1-on-1 Project Discovery Call</span>
+                    </div>
+
+                    <h3 class="text-xl sm:text-3xl font-bold text-white leading-snug" data-en="Let's Discuss Your Website Idea" data-bn="আপনার ওয়েবসাইট আইডিয়া নিয়ে আলোচনা করুন">Let's Discuss Your Website Idea</h3>
+                    <p class="text-xs sm:text-base text-slate-400 leading-relaxed" data-en="Whether you want a ready-made design customized for your brand or a completely bespoke animated website, our team will walk you through the entire launch plan." data-bn="আপনি রেডিমেড ডিজাইন কাস্টমাইজ করতে চান অথবা সম্পূর্ণ নতুন অ্যানিমেটেড ওয়েবসাইট তৈরি করতে চান—আমাদের টিম আপনাকে সম্পূর্ণ গাইড করবে।">
+                        Whether you want a ready-made design customized for your brand or a completely bespoke animated website, our team will walk you through the entire launch plan.
+                    </p>
+
+                    <div class="grid sm:grid-cols-3 gap-2.5 sm:gap-4 pt-3 border-t border-white/10 text-xs sm:text-sm text-slate-300">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-cyan-500/15 text-cyan-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="clock" class="w-4 h-4"></i>
+                            </div>
+                            <span data-en="20-Min Live Strategy Call" data-bn="২০ মিনিটের লাইভ আলোচনা">20-Min Live Strategy Call</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="layout" class="w-4 h-4"></i>
+                            </div>
+                            <span data-en="Custom Design Roadmap" data-bn="কাস্টম ডিজাইন প্ল্যানিং">Custom Design Roadmap</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="zap" class="w-4 h-4"></i>
+                            </div>
+                            <span data-en="Fast Launch & Ownership" data-bn="দ্রুত ডেলিভারি ও মালিকানা">Fast Launch & Ownership</span>
+                        </div>
+                    </div>
+
+                    <!-- Trigger Buttons: Opens Hidden Appointment Modal or WhatsApp -->
+                    <div class="pt-2 sm:pt-4 flex flex-col sm:flex-row gap-2.5 sm:gap-3.5">
+                        <button type="button" onclick="openAppointmentModal()" class="flex-1 py-3.5 px-5 sm:py-4 sm:px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs sm:text-base shadow-xl shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="calendar-plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            <span data-en="Schedule Your Appointment" data-bn="অ্যাপয়েন্টমেন্ট সিডিউল করুন">Schedule Your Appointment</span>
+                        </button>
+                        <a href="https://wa.me/919674159123?text=Hello%20Nexus%20Studio!%20I%20want%20to%20book%20a%20website%20consultation." target="_blank" rel="noopener" class="py-3.5 px-5 sm:py-4 sm:px-6 rounded-xl sm:rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs sm:text-base transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400"></i>
+                            <span data-en="WhatsApp Chat" data-bn="হোয়াটসঅ্যাপ চ্যাট">WhatsApp Chat</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIDDEN APPOINTMENT SCHEDULER MODAL (OPENS ON BOOKING CLICK) -->
+    <div id="appointment-modal" onclick="if(event.target === this) closeAppointmentModal()" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+        <div class="relative w-full max-w-2xl my-8">
+            <div class="gradient-border-box p-6 sm:p-9 shadow-2xl">
+                <!-- Close Button -->
+                <button type="button" onclick="closeAppointmentModal()" aria-label="Close Appointment Modal" class="absolute top-5 right-5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Appointment Form -->
+                <form id="appointment-form" onsubmit="handleAppointmentSubmit(event)" class="space-y-5">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4 pr-10">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="calendar-plus" class="w-5 h-5 text-cyan-400"></i>
+                            <h3 class="text-lg font-bold text-white" data-en="Schedule Your Appointment" data-bn="আপনার অ্যাপয়েন্টমেন্ট সিডিউল করুন">Schedule Your Appointment</h3>
+                        </div>
+                        <span class="text-xs font-medium text-emerald-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span data-en="Slots Open" data-bn="স্লট খালি আছে">Slots Open</span>
+                        </span>
+                    </div>
+
+                    <!-- Name & Phone -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Full Name *" data-bn="আপনার নাম *">Full Name *</label>
+                            <input type="text" id="appt-name" required placeholder="e.g. Tanvir Ahmed" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Phone / WhatsApp Number *" data-bn="ফোন / হোয়াটসঅ্যাপ নম্বর *">Phone / WhatsApp Number *</label>
+                            <div class="flex items-center rounded-xl bg-white/5 border border-white/10 focus-within:border-indigo-500 transition-colors overflow-hidden">
+                                <span class="px-3.5 py-3 bg-white/[0.04] border-r border-white/10 text-sm font-bold text-cyan-300 select-none">+91</span>
+                                <input type="tel" id="appt-phone" required value="+91 " placeholder="+91 9XXXXXXXXX" class="w-full px-3.5 py-3 bg-transparent text-white text-sm focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Website Type & Email -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Website Type / Selected Design *" data-bn="ওয়েবসাইটের ধরন *">Website Type / Selected Design *</label>
+                            <select id="appt-type" required class="w-full px-4 py-3 rounded-xl bg-dark-800 border border-white/10 text-cyan-300 font-medium text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                                <option value="Custom Animated Website">Custom Animated Website</option>
+                                <option value="E-Commerce Online Store">E-Commerce Online Store</option>
+                                <option value="Business / Corporate Website">Business / Corporate Website</option>
+                                <option value="Portfolio / SaaS Website">Portfolio / SaaS Website</option>
+                                <option value="Restaurant / Booking Website">Restaurant / Booking Website</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Email Address (Optional)" data-bn="ইমেইল অ্যাড্রেস (ঐচ্ছিক)">Email Address (Optional)</label>
+                            <input type="email" id="appt-email" placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Preferred Date -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Preferred Date *" data-bn="পছন্দের তারিখ *">Preferred Date *</label>
+                        <input type="date" id="appt-date" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors [color-scheme:dark]">
+                    </div>
+
+                    <!-- Interactive Time Slot Pills -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-2" data-en="Select Time Slot *" data-bn="সময় নির্বাচন করুন *">Select Time Slot *</label>
+                        <input type="hidden" id="appt-time" value="12:00 PM" required>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="time-slots">
+                            <button type="button" onclick="selectTimeSlot('10:00 AM', this)" class="time-slot-btn py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold text-slate-300 hover:border-indigo-500/50 transition-all">10:00 AM</button>
+                            <button type="button" onclick="selectTimeSlot('12:00 PM', this)" class="time-slot-btn active py-2.5 px-3 rounded-xl bg-indigo-600 border border-indigo-500 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all">12:00 PM</button>
+                            <button type="button" onclick="selectTimeSlot('03:00 PM', this)" class="time-slot-btn py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold text-slate-300 hover:border-indigo-500/50 transition-all">03:00 PM</button>
+                            <button type="button" onclick="selectTimeSlot('05:00 PM', this)" class="time-slot-btn py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold text-slate-300 hover:border-indigo-500/50 transition-all">05:00 PM</button>
+                            <button type="button" onclick="selectTimeSlot('07:00 PM', this)" class="time-slot-btn py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold text-slate-300 hover:border-indigo-500/50 transition-all">07:00 PM</button>
+                            <button type="button" onclick="selectTimeSlot('09:00 PM', this)" class="time-slot-btn py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold text-slate-300 hover:border-indigo-500/50 transition-all">09:00 PM</button>
+                        </div>
+                    </div>
+
+                    <!-- Project Notes -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Project Details / Notes" data-bn="প্রজেক্ট সম্পর্কে সংক্ষিপ্ত বিবরণ">Project Details / Notes</label>
+                        <textarea id="appt-notes" rows="2" placeholder="Briefly describe your business or features you want..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"></textarea>
+                    </div>
+
+                    <!-- Submit & WhatsApp Action Row -->
+                    <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                        <button type="submit" class="flex-1 py-4 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                            <span data-en="Confirm Appointment" data-bn="অ্যাপয়েন্টমেন্ট কনফার্ম করুন">Confirm Appointment</span>
+                        </button>
+                        <button type="button" onclick="sendDirectFormToWhatsApp()" class="py-4 px-5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-sm transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span data-en="Book via WhatsApp" data-bn="হোয়াটসঅ্যাপে বুক করুন">Book via WhatsApp</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Confirmation Summary Card (Hidden until booked) -->
+                <div id="appointment-confirmation" class="hidden space-y-5 py-4 text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
+                        <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-white" data-en="Appointment Confirmed!" data-bn="অ্যাপয়েন্টমেন্ট কনফার্ম হয়েছে!">Appointment Confirmed!</h3>
+                        <p class="text-sm text-slate-400 mt-1" data-en="Your consultation slot has been reserved. Send the details to our WhatsApp for instant confirmation." data-bn="আপনার স্লটটি সংরক্ষিত হয়েছে। দ্রুত কনফার্মেশনের জন্য নিচের বাটনে ক্লিক করে হোয়াটসঅ্যাপে পাঠিয়ে দিন।">
+                            Your consultation slot has been reserved. Send the details to our WhatsApp for instant confirmation.
+                        </p>
+                    </div>
+
+                    <div id="booking-summary-box" class="rounded-2xl bg-white/5 border border-white/10 p-5 text-left text-sm space-y-2 text-slate-200">
+                        <!-- Filled dynamically via JS -->
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <a id="confirm-wa-link" href="#" target="_blank" rel="noopener" class="flex-1 py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                            <span data-en="Send Booking to WhatsApp" data-bn="বুকিং ডিটেইলস হোয়াটসঅ্যাপে পাঠান">Send Booking to WhatsApp</span>
+                        </a>
+                        <button type="button" onclick="closeAppointmentModal(); openAdminModal();" class="py-3.5 px-5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-200 font-semibold text-sm flex items-center justify-center gap-1.5 transition-all">
+                            <i data-lucide="shield" class="w-4 h-4 text-indigo-400"></i>
+                            <span data-en="View in Admin" data-bn="অ্যাডমিনে দেখুন">View in Admin</span>
+                        </button>
+                        <button type="button" onclick="resetAppointmentForm()" class="py-3.5 px-5 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 font-semibold text-sm transition-all">
+                            <span data-en="Book Another" data-bn="নতুন বুকিং">Book Another</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL MODAL (ALL BOOKING DETAILS) -->
+    <div id="admin-modal" onclick="if(event.target === this) closeAdminModal()" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto">
+        <div class="relative w-full max-w-5xl my-6 rounded-3xl bg-dark-900 border border-white/15 shadow-2xl overflow-hidden">
+            <!-- Admin Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-5 border-b border-white/10 bg-dark-800/90">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-extrabold text-white" data-en="Admin Panel — Appointment Bookings" data-bn="অ্যাডমিন প্যানেল — সকল বুকিং তালিকা">Admin Panel — Appointment Bookings</h3>
+                        <div class="flex items-center gap-2 mt-0.5">
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[11px] font-bold text-emerald-300">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span data-en="LIVE" data-bn="লাইভ">LIVE</span>
+                        </span>
+                        <span id="admin-firebase-status" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-[11px] font-semibold text-indigo-300" data-en="Firebase: Connecting..." data-bn="ফায়ারবেস: কানেক্ট হচ্ছে...">Firebase: Connecting...</span>
+                        <span id="admin-script-status" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-[11px] font-semibold text-cyan-300" data-en="Apps Script: Ready" data-bn="অ্যাপস স্ক্রিপ্ট: প্রস্তুত">Apps Script: Ready</span>
+                        <p class="text-xs text-slate-400" data-en="Complete details of all client appointments, schedules & notes" data-bn="ক্লায়েন্টদের সকল অ্যাপয়েন্টমেন্ট, সময়সূচী ও নোটের বিস্তারিত তথ্য">Complete details of all client appointments, schedules & notes</p>
+                    </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2.5 self-end sm:self-auto">
+                    <button id="admin-refresh-btn" type="button" onclick="refreshAdminBookingsLive()" class="hidden px-3 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-200 text-xs font-bold items-center gap-1.5 transition-all" title="Refresh Live Bookings">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        <span data-en="Live Sync" data-bn="লাইভ সিঙ্ক">Live Sync</span>
+                    </button>
+                    <button id="admin-export-btn" type="button" onclick="exportBookingsCSV()" class="hidden px-3.5 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-bold items-center gap-1.5 transition-all">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span data-en="Export CSV" data-bn="CSV ডাউনলোড">Export CSV</span>
+                    </button>
+                    <button id="admin-lock-btn" type="button" onclick="lockAdminSession()" class="hidden px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold items-center gap-1.5 transition-all">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                        <span data-en="Lock" data-bn="লক করুন">Lock</span>
+                    </button>
+                    <button type="button" onclick="closeAdminModal()" aria-label="Close Admin Panel" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Login Gate (Shown until authenticated) -->
+            <div id="admin-login-view" class="p-6 sm:p-10">
+                <div class="max-w-md mx-auto rounded-3xl bg-dark-800/80 border border-white/10 p-6 sm:p-8 shadow-2xl space-y-5">
+                    <div class="text-center space-y-2">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center mx-auto">
+                            <i data-lucide="shield-lock" class="w-7 h-7"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-en="Admin Verification" data-bn="অ্যাডমিন লগইন">Admin Verification</h4>
+                        <p class="text-xs text-slate-400" data-en="Enter your registered mobile number and password to access bookings." data-bn="বুকিং তালিকা দেখতে আপনার মোবাইল নম্বর ও পাসওয়ার্ড দিন।">Enter your registered mobile number and password to access bookings.</p>
+                    </div>
+
+                    <!-- Cooldown Timer Banner -->
+                    <div id="admin-cooldown-banner" class="hidden p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/35 text-rose-200 text-xs font-semibold flex items-center justify-between gap-2">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="timer" class="w-4 h-4 text-rose-400 shrink-0"></i>
+                            <span data-en="Cooldown active due to failed login" data-bn="ভুল লগইনের কারণে কুলডাউন চলছে">Cooldown active due to failed login</span>
+                        </span>
+                        <span id="admin-cooldown-timer" class="px-2.5 py-1 rounded-lg bg-rose-500/25 font-mono font-bold text-rose-200">30s</span>
+                    </div>
+
+                    <!-- Login Error Alert -->
+                    <div id="admin-login-error" class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium"></div>
+
+                    <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Admin Mobile Number" data-bn="অ্যাডমিন মোবাইল নম্বর">Admin Mobile Number</label>
+                            <input type="tel" id="admin-mobile-input" required autocomplete="tel" placeholder="Enter mobile number" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5" data-en="Admin Password" data-bn="অ্যাডমিন পাসওয়ার্ড">Admin Password</label>
+                            <input type="password" id="admin-password-input" required autocomplete="current-password" placeholder="Enter password" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+                        <button id="admin-login-submit-btn" type="submit" class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="log-in" class="w-4 h-4"></i>
+                            <span id="admin-login-btn-text" data-en="Unlock Admin Panel" data-bn="অ্যাডমিন প্যানেল আনলক করুন">Unlock Admin Panel</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Stats & Search/Filter Toolbar (Shown after login) -->
+            <div id="admin-dashboard-view" class="hidden p-6 space-y-5">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                    <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+                        <div class="text-xs text-slate-400" data-en="Total Bookings" data-bn="মোট বুকিং">Total Bookings</div>
+                        <div id="stat-total-bookings" class="text-2xl font-extrabold text-white mt-1">0</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-amber-500/[0.06] border border-amber-500/20">
+                        <div class="text-xs text-amber-300/80" data-en="Pending" data-bn="পেন্ডিং">Pending</div>
+                        <div id="stat-pending-bookings" class="text-2xl font-extrabold text-amber-400 mt-1">0</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-emerald-500/[0.06] border border-emerald-500/20">
+                        <div class="text-xs text-emerald-300/80" data-en="Confirmed" data-bn="কনফার্মড">Confirmed</div>
+                        <div id="stat-confirmed-bookings" class="text-2xl font-extrabold text-emerald-400 mt-1">0</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-indigo-500/[0.06] border border-indigo-500/20">
+                        <div class="text-xs text-indigo-300/80" data-en="Completed" data-bn="সম্পন্ন">Completed</div>
+                        <div id="stat-completed-bookings" class="text-2xl font-extrabold text-indigo-400 mt-1">0</div>
+                    </div>
+                </div>
+
+                <!-- Search & Status Filter -->
+                <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                    <div class="relative flex-1">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="admin-search" oninput="renderAdminBookings()" placeholder="Search by name, phone, website type, date or notes..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0" id="admin-status-filters">
+                        <button type="button" onclick="setAdminStatusFilter('all', this)" class="admin-filter-btn px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold whitespace-nowrap">All</button>
+                        <button type="button" onclick="setAdminStatusFilter('Pending', this)" class="admin-filter-btn px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold whitespace-nowrap">Pending</button>
+                        <button type="button" onclick="setAdminStatusFilter('Confirmed', this)" class="admin-filter-btn px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold whitespace-nowrap">Confirmed</button>
+                        <button type="button" onclick="setAdminStatusFilter('Completed', this)" class="admin-filter-btn px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold whitespace-nowrap">Completed</button>
+                    </div>
+                </div>
+
+                <!-- Bookings Table / Cards Container -->
+                <div id="admin-bookings-list" class="space-y-3 max-h-[55vh] overflow-y-auto pr-1">
+                    <!-- Dynamically rendered via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 bg-dark-950 py-8 sm:py-12 pb-24 sm:pb-12 text-slate-400 text-xs sm:text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-white">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                </div>
+                <span class="font-bold text-white tracking-wide">NEXUS STUDIO</span>
+            </div>
+            <p class="text-center sm:text-left">&copy; 2026 Nexus Studio. All rights reserved. Book your appointment or chat with us anytime.</p>
+            <div class="flex items-center gap-5">
+                <a href="#services" class="hover:text-white transition-colors">Services</a>
+                <a href="#appointment" class="hover:text-white transition-colors">Appointment</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP CHAT BUTTON -->
+    <a href="https://wa.me/919674159123?text=Hello%20Nexus%20Studio!%20I%20want%20to%20chat%20about%20a%20website." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 group flex items-center gap-3">
+        <span class="hidden sm:inline-block px-3.5 py-2 rounded-xl bg-dark-800/95 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Chat on WhatsApp
+        </span>
+        <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white flex items-center justify-center shadow-2xl shadow-emerald-600/40 hover:scale-110 transition-transform">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-30"></span>
+            <i data-lucide="message-circle" class="w-6 h-6 sm:w-7 sm:h-7 relative z-10"></i>
+        </div>
+    </a>
+
+    <!-- LIVE PREVIEW MODAL FOR WEBSITES (NO PRICES, ONLY APPOINTMENT & WHATSAPP) -->
+    <div id="preview-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="relative w-full max-w-3xl rounded-3xl bg-dark-900 border border-white/15 overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-dark-800">
+                <div class="flex items-center gap-3">
+                    <span id="preview-badge" class="px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase">Category</span>
+                    <h3 id="preview-title" class="text-lg font-bold text-white">Website Name</h3>
+                </div>
+                <button onclick="closePreviewModal()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="rounded-2xl overflow-hidden border border-white/10 aspect-video bg-dark-950 relative">
+                    <img id="preview-img" src="" alt="Website Preview" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <p id="preview-desc" class="text-sm text-slate-300 max-w-xl"></p>
+                    <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                        <button id="preview-appt-btn" class="px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs sm:text-sm shadow-lg flex items-center gap-1.5">
+                            <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                            <span>Book Appointment</span>
+                        </button>
+                        <a id="preview-wa-btn" href="#" target="_blank" rel="noopener" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg flex items-center gap-1.5">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>WhatsApp Chat</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-24 right-6 z-50 translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="flex items-center gap-3 px-5 py-4 rounded-2xl bg-dark-800 border border-emerald-500/40 shadow-2xl shadow-emerald-500/10">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <i data-lucide="check" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-white" id="toast-title">Appointment Booked!</h4>
+                <p class="text-xs text-slate-300" id="toast-msg">We will confirm your slot shortly.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR ANIMATIONS, CANVAS, FILTERING & MODALS -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        let currentLang = 'en';
+
+        // 1. INTERACTIVE PARTICLE NETWORK CANVAS (HERO)
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 140 };
+
+        function resizeCanvas() {
+            if (!canvas || !canvas.parentElement) return;
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+            initParticles();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', (e) => {
+            if (canvas) {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            }
+
+            // Update Ambient Cursor Glow
+            const glow = document.getElementById('cursor-glow');
+            if (glow) {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            }
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.8;
+                this.vx = (Math.random() - 0.5) * 0.65;
+                this.vy = (Math.random() - 0.5) * 0.65;
+                this.color = Math.random() > 0.5 ? 'rgba(99, 102, 241, 0.7)' : 'rgba(6, 182, 212, 0.7)';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                // Subtle mouse repulsion
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius && dist > 0) {
+                        const force = (mouse.radius - dist) / mouse.radius;
+                        this.x -= (dx / dist) * force * 1.5;
+                        this.y -= (dy / dist) * force * 1.5;
+                    }
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const isMobile = window.innerWidth < 640;
+            const divisor = isMobile ? 26000 : 14000;
+            const maxCount = isMobile ? 35 : 85;
+            const count = Math.min(maxCount, Math.floor((canvas.width * canvas.height) / divisor));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.18 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        // 2. KINETIC TYPING TEXT EFFECT
+        const typingPhrasesEn = [
+            "E-Commerce Websites",
+            "Animated Brand Portals",
+            "High-Converting Stores",
+            "Custom SaaS Platforms"
+        ];
+        const typingPhrasesBn = [
+            "ই-কমার্স ওয়েবসাইট",
+            "অ্যানিমেটেড ব্র্যান্ড সাইট",
+            "হাই-কনভার্টিং স্টোর",
+            "কাস্টম বিজনেস ওয়েবসাইট"
+        ];
+        let phraseIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+
+        function typeEffect() {
+            const el = document.getElementById('typing-text');
+            if (!el) return;
+            const list = currentLang === 'en' ? typingPhrasesEn : typingPhrasesBn;
+            const currentPhrase = list[phraseIdx % list.length];
+
+            if (isDeleting) {
+                el.textContent = currentPhrase.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                el.textContent = currentPhrase.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let speed = isDeleting ? 45 : 90;
+            if (!isDeleting && charIdx === currentPhrase.length) {
+                speed = 1800;
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                phraseIdx++;
+                speed = 350;
+            }
+            setTimeout(typeEffect, speed);
+        }
+
+        // 3. 3D TILT CARDS INTERACTION
+        function initTiltCards() {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -7;
+                    const rotateY = ((x - centerX) / centerX) * 7;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                });
+            });
+        }
+
+        // 3B. MAGNETIC BUTTON MOTION
+        function initMagneticButtons() {
+            if (window.innerWidth < 768) return;
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const relX = e.clientX - rect.left - rect.width / 2;
+                    const relY = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate3d(${relX * 0.18}px, ${relY * 0.22}px, 0)`;
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate3d(0px, 0px, 0px)';
+                });
+            });
+        }
+
+        // 4. PORTFOLIO / WEBSITES DATA & RENDERING (NO PRICES, ONLY APPOINTMENT & WHATSAPP)
+        const WHATSAPP_NUMBER = "919674159123";
+
+        const templates = [
+            {
+                id: 1,
+                title: "LuxeCart Fashion E-Commerce",
+                category: "ecommerce",
+                badge: "E-Commerce",
+                desc: "Modern fashion & lifestyle online store with smooth cart drawer, instant checkout & fast product filter.",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                title: "NovaTech AI SaaS Landing",
+                category: "portfolio",
+                badge: "SaaS & Tech",
+                desc: "Dark-mode SaaS startup website with glowing interactive gradients, feature showcase, and 60fps scroll motion.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                title: "Apex Real Estate & Corporate",
+                category: "business",
+                badge: "Business",
+                desc: "Luxury real estate & corporate agency portal featuring property showcase, lead capture & virtual tour UI.",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                title: "GadgetHub Electronics Store",
+                category: "ecommerce",
+                badge: "E-Commerce",
+                desc: "High-converting tech & gadget shop with flash deal countdowns, specs comparison & instant order tracking.",
+                image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                title: "Creative Studio 3D Portfolio",
+                category: "portfolio",
+                badge: "Portfolio",
+                desc: "Interactive designer & agency portfolio with magnetic buttons, smooth gallery transitions & booking flow.",
+                image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 6,
+                title: "MedCare Clinic & Diagnostic",
+                category: "business",
+                badge: "Healthcare",
+                desc: "Clean medical & hospital website with online doctor appointment booking, department directory & WhatsApp care.",
+                image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        function renderPortfolio(filter = 'all') {
+            const grid = document.getElementById('portfolio-grid');
+            const filtered = filter === 'all' ? templates : templates.filter(t => t.category === filter);
+
+            grid.innerHTML = filtered.map(item => {
+                const waText = encodeURIComponent(`Hello Nexus Studio! I am interested in the "${item.title}" website design.`);
+                return `
+                <div class="group rounded-3xl bg-dark-800/80 border border-white/10 overflow-hidden hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="relative overflow-hidden aspect-[16/10] bg-dark-950">
+                            <img src="${item.image}" alt="${item.title}" onerror="this.src='https://placehold.co/800x500/121217/6366f1?text=Website+Preview'" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-dark-900/80 backdrop-blur-md border border-white/10 text-xs font-semibold text-cyan-300">
+                                ${item.badge}
+                            </span>
+                            <button onclick="openPreviewModal(${item.id})" class="absolute bottom-4 right-4 px-3.5 py-2 rounded-xl bg-white/15 hover:bg-indigo-600 backdrop-blur-md text-white text-xs font-bold flex items-center gap-1.5 transition-all">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Preview
+                            </button>
+                        </div>
+
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">${item.title}</h3>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-2 line-clamp-2">${item.desc}</p>
+                        </div>
+                    </div>
+
+                    <div class="px-6 pb-6 pt-3 border-t border-white/5 grid grid-cols-2 gap-2.5">
+                        <button onclick="bookForWebsite('${item.title}')" class="py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center gap-1.5">
+                            <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
+                            <span>Appointment</span>
+                        </button>
+                        <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${waText}" target="_blank" rel="noopener" class="py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/35 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            `}).join('');
+
+            lucide.createIcons();
+        }
+
+        function filterPortfolio(category, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-indigo-600', 'text-white');
+                b.classList.add('text-slate-400');
+            });
+            btn.classList.add('bg-indigo-600', 'text-white');
+            btn.classList.remove('text-slate-400');
+            renderPortfolio(category);
+        }
+
+        // 5. APPOINTMENT BOOKING & PREVIEW MODAL HANDLERS
+        function openAppointmentModal() {
+            const modal = document.getElementById('appointment-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeAppointmentModal() {
+            const modal = document.getElementById('appointment-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function bookForWebsite(websiteTitle) {
+            resetAppointmentForm();
+            const selectEl = document.getElementById('appt-type');
+            let matched = false;
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value === websiteTitle) {
+                    selectEl.selectedIndex = i;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                const opt = new Option(`Design: ${websiteTitle}`, websiteTitle);
+                selectEl.add(opt);
+                selectEl.value = websiteTitle;
+            }
+            openAppointmentModal();
+        }
+
+        function selectTimeSlot(timeStr, btn) {
+            document.getElementById('appt-time').value = timeStr;
+            document.querySelectorAll('.time-slot-btn').forEach(b => {
+                b.classList.remove('bg-indigo-600', 'border-indigo-500', 'text-white', 'shadow-lg', 'shadow-indigo-600/25');
+                b.classList.add('bg-white/5', 'border-white/10', 'text-slate-300');
+            });
+            btn.classList.add('bg-indigo-600', 'border-indigo-500', 'text-white', 'shadow-lg', 'shadow-indigo-600/25');
+            btn.classList.remove('bg-white/5', 'border-white/10', 'text-slate-300');
+        }
+
+        // In-memory store for all appointment bookings visible in the Admin Panel
+        let appointmentBookings = [];
+        let adminStatusFilter = 'all';
+
+        // Admin Credentials & 30-Second Cooldown State
+        const ADMIN_MOBILE = "9674159123";
+        const ADMIN_PASSWORD = "Sumon@27072007";
+        const ADMIN_COOLDOWN_SECONDS = 30;
+        let isAdminAuthenticated = false;
+        let adminCooldownRemaining = 0;
+        let adminCooldownInterval = null;
+
+        function syncAdminViewVisibility() {
+            const loginView = document.getElementById('admin-login-view');
+            const dashboardView = document.getElementById('admin-dashboard-view');
+            const refreshBtn = document.getElementById('admin-refresh-btn');
+            const exportBtn = document.getElementById('admin-export-btn');
+            const lockBtn = document.getElementById('admin-lock-btn');
+
+            if (isAdminAuthenticated) {
+                loginView.classList.add('hidden');
+                dashboardView.classList.remove('hidden');
+                if (refreshBtn) {
+                    refreshBtn.classList.remove('hidden');
+                    refreshBtn.classList.add('flex');
+                }
+                exportBtn.classList.remove('hidden');
+                exportBtn.classList.add('flex');
+                lockBtn.classList.remove('hidden');
+                lockBtn.classList.add('flex');
+            } else {
+                loginView.classList.remove('hidden');
+                dashboardView.classList.add('hidden');
+                if (refreshBtn) {
+                    refreshBtn.classList.add('hidden');
+                    refreshBtn.classList.remove('flex');
+                }
+                exportBtn.classList.add('hidden');
+                exportBtn.classList.remove('flex');
+                lockBtn.classList.add('hidden');
+                lockBtn.classList.remove('flex');
+            }
+            updateAdminCooldownUI();
+        }
+
+        function updateAdminCooldownUI() {
+            const banner = document.getElementById('admin-cooldown-banner');
+            const timerEl = document.getElementById('admin-cooldown-timer');
+            const submitBtn = document.getElementById('admin-login-submit-btn');
+            const btnText = document.getElementById('admin-login-btn-text');
+            const mobileInput = document.getElementById('admin-mobile-input');
+            const passInput = document.getElementById('admin-password-input');
+
+            if (!banner || !timerEl || !submitBtn) return;
+
+            if (adminCooldownRemaining > 0) {
+                banner.classList.remove('hidden');
+                banner.classList.add('flex');
+                timerEl.textContent = `${adminCooldownRemaining}s`;
+                submitBtn.disabled = true;
+                if (mobileInput) mobileInput.disabled = true;
+                if (passInput) passInput.disabled = true;
+                if (btnText) btnText.textContent = `Cooldown (${adminCooldownRemaining}s)`;
+            } else {
+                banner.classList.add('hidden');
+                banner.classList.remove('flex');
+                submitBtn.disabled = false;
+                if (mobileInput) mobileInput.disabled = false;
+                if (passInput) passInput.disabled = false;
+                if (btnText) {
+                    btnText.textContent = currentLang === 'bn' ? 'অ্যাডমিন প্যানেল আনলক করুন' : 'Unlock Admin Panel';
+                }
+            }
+        }
+
+        function startAdminCooldown() {
+            adminCooldownRemaining = ADMIN_COOLDOWN_SECONDS;
+            updateAdminCooldownUI();
+
+            if (adminCooldownInterval) {
+                clearInterval(adminCooldownInterval);
+            }
+
+            adminCooldownInterval = setInterval(() => {
+                adminCooldownRemaining -= 1;
+                if (adminCooldownRemaining <= 0) {
+                    adminCooldownRemaining = 0;
+                    clearInterval(adminCooldownInterval);
+                    adminCooldownInterval = null;
+                    const errEl = document.getElementById('admin-login-error');
+                    if (errEl) errEl.classList.add('hidden');
+                }
+                updateAdminCooldownUI();
+            }, 1000);
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            if (adminCooldownRemaining > 0) {
+                updateAdminCooldownUI();
+                return;
+            }
+
+            const enteredMobile = (document.getElementById('admin-mobile-input')?.value || '').replace(/[^\d]/g, '');
+            const enteredPassword = document.getElementById('admin-password-input')?.value || '';
+            const errEl = document.getElementById('admin-login-error');
+
+            if (enteredMobile === ADMIN_MOBILE && enteredPassword === ADMIN_PASSWORD) {
+                isAdminAuthenticated = true;
+                if (errEl) {
+                    errEl.textContent = '';
+                    errEl.classList.add('hidden');
+                }
+                document.getElementById('admin-login-form').reset();
+                syncAdminViewVisibility();
+                renderAdminBookings();
+                lucide.createIcons();
+            } else {
+                isAdminAuthenticated = false;
+                if (errEl) {
+                    errEl.textContent = 'Invalid mobile number or password! 30s cooldown started.';
+                    errEl.classList.remove('hidden');
+                }
+                startAdminCooldown();
+                lucide.createIcons();
+            }
+        }
+
+        function lockAdminSession() {
+            isAdminAuthenticated = false;
+            syncAdminViewVisibility();
+            lucide.createIcons();
+        }
+
+        function updateAdminBadges() {
+            const count = appointmentBookings.length;
+            const badge = document.getElementById('admin-booking-badge');
+            const mobileBadge = document.getElementById('mobile-admin-badge');
+            if (badge) badge.textContent = count;
+            if (mobileBadge) mobileBadge.textContent = count;
+        }
+
+        function setFirebaseSyncStatus(state, labelEn, labelBn) {
+            const statusEl = document.getElementById('admin-firebase-status');
+            if (!statusEl) return;
+            statusEl.setAttribute('data-en', labelEn);
+            statusEl.setAttribute('data-bn', labelBn);
+            statusEl.textContent = currentLang === 'bn' ? labelBn : labelEn;
+
+            statusEl.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-semibold ';
+            if (state === 'live') {
+                statusEl.className += 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300';
+            } else if (state === 'error') {
+                statusEl.className += 'bg-rose-500/15 border-rose-500/30 text-rose-300';
+            } else {
+                statusEl.className += 'bg-indigo-500/15 border-indigo-500/30 text-indigo-300';
+            }
+        }
+
+        function openAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            syncAdminViewVisibility();
+            if (typeof window.syncCloudBookingsNow === 'function') {
+                window.syncCloudBookingsNow();
+            }
+            if (isAdminAuthenticated) {
+                renderAdminBookings();
+            }
+            lucide.createIcons();
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function refreshAdminBookingsLive() {
+            if (!isAdminAuthenticated) return;
+            if (typeof window.syncCloudBookingsNow === 'function') {
+                window.syncCloudBookingsNow();
+            }
+            renderAdminBookings();
+            const toast = document.getElementById('toast');
+            if (toast) {
+                document.getElementById('toast-title').textContent = currentLang === 'bn' ? 'লাইভ সিঙ্ক সম্পন্ন' : 'Live Sync Active';
+                document.getElementById('toast-msg').textContent = currentLang === 'bn'
+                    ? `মোট ${appointmentBookings.length}টি অ্যাপয়েন্টমেন্ট আপডেট হয়েছে।`
+                    : `Showing ${appointmentBookings.length} live appointment(s).`;
+                toast.classList.remove('translate-y-24', 'opacity-0');
+                setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
+            }
+            lucide.createIcons();
+        }
+
+        function setDefaultAppointmentDate() {
+            const dateInput = document.getElementById('appt-date');
+            if (!dateInput) return;
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const isoDate = tomorrow.toISOString().split('T')[0];
+            dateInput.min = new Date().toISOString().split('T')[0];
+            if (!dateInput.value) {
+                dateInput.value = isoDate;
+            }
+        }
+
+        function normalizePhoneWith91(rawPhone) {
+            const cleaned = (rawPhone || '').trim();
+            const digitsOnly = cleaned.replace(/[^\d]/g, '');
+            if (!digitsOnly) return '+91 ';
+            if (digitsOnly.startsWith('91') && digitsOnly.length > 10) {
+                return '+' + digitsOnly;
+            }
+            return '+91 ' + digitsOnly.replace(/^91/, '');
+        }
+
+        function buildWhatsAppBookingMessage(booking) {
+            const lines = [
+                'Hello Nexus Studio! I booked a website consultation appointment:',
+                `• Booking ID: ${booking.bookingCode}`,
+                `• Name: ${booking.name}`,
+                `• Phone/WhatsApp: ${booking.phone}`,
+                booking.email ? `• Email: ${booking.email}` : null,
+                `• Website Type: ${booking.type}`,
+                `• Date: ${booking.date}`,
+                `• Time Slot: ${booking.time}`,
+                booking.notes ? `• Notes: ${booking.notes}` : null
+            ].filter(Boolean);
+            return encodeURIComponent(lines.join('\n'));
+        }
+
+        function handleAppointmentSubmit(e) {
+            e.preventDefault();
+            const name = (document.getElementById('appt-name')?.value || '').trim();
+            const phone = normalizePhoneWith91(document.getElementById('appt-phone')?.value || '');
+            const type = document.getElementById('appt-type')?.value || 'Custom Animated Website';
+            const email = (document.getElementById('appt-email')?.value || '').trim();
+            const date = document.getElementById('appt-date')?.value || '';
+            const time = document.getElementById('appt-time')?.value || '12:00 PM';
+            const notes = (document.getElementById('appt-notes')?.value || '').trim();
+
+            if (!name || !date) return;
+
+            const timestamp = Date.now();
+            const booking = {
+                id: `bk_${timestamp}`,
+                bookingCode: `APT-${String(timestamp).slice(-4)}`,
+                name,
+                phone,
+                email,
+                type,
+                date,
+                time,
+                notes,
+                status: 'Pending',
+                createdAt: new Date(timestamp).toLocaleString()
+            };
+
+            appointmentBookings = [booking, ...appointmentBookings.filter(item => item.id !== booking.id)];
+            updateAdminBadges();
+
+            const summaryBox = document.getElementById('booking-summary-box');
+            if (summaryBox) {
+                summaryBox.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                        <span class="text-slate-400">Booking ID:</span>
+                        <span class="font-mono font-bold text-cyan-300">${booking.bookingCode}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Name:</span>
+                        <span class="font-semibold text-white">${booking.name}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Phone / WhatsApp:</span>
+                        <span class="font-semibold text-emerald-300">${booking.phone}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Website Type:</span>
+                        <span class="font-semibold text-indigo-300">${booking.type}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Schedule:</span>
+                        <span class="font-semibold text-white">${booking.date} at ${booking.time}</span>
+                    </div>
+                    ${booking.notes ? `<div class="pt-1 text-xs text-slate-300"><span class="text-slate-400">Notes:</span> ${booking.notes}</div>` : ''}
+                `;
+            }
+
+            const waLink = document.getElementById('confirm-wa-link');
+            if (waLink) {
+                waLink.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${buildWhatsAppBookingMessage(booking)}`;
+            }
+
+            document.getElementById('appointment-form')?.classList.add('hidden');
+            document.getElementById('appointment-confirmation')?.classList.remove('hidden');
+
+            if (isAdminAuthenticated) {
+                renderAdminBookings();
+            }
+
+            const toast = document.getElementById('toast');
+            if (toast) {
+                document.getElementById('toast-title').textContent = `Appointment Booked (${booking.bookingCode})`;
+                document.getElementById('toast-msg').textContent = `${booking.name} — ${booking.date} (${booking.time})`;
+                toast.classList.remove('translate-y-24', 'opacity-0');
+                setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 4500);
+            }
+            lucide.createIcons();
+        }
+
+        function sendDirectFormToWhatsApp() {
+            const name = (document.getElementById('appt-name')?.value || '').trim() || ' prospective client';
+            const phone = normalizePhoneWith91(document.getElementById('appt-phone')?.value || '');
+            const type = document.getElementById('appt-type')?.value || 'Custom Animated Website';
+            const email = (document.getElementById('appt-email')?.value || '').trim();
+            const date = document.getElementById('appt-date')?.value || 'Flexible';
+            const time = document.getElementById('appt-time')?.value || '12:00 PM';
+            const notes = (document.getElementById('appt-notes')?.value || '').trim();
+
+            const msg = buildWhatsAppBookingMessage({
+                bookingCode: 'DIRECT-WA',
+                name,
+                phone,
+                email,
+                type,
+                date,
+                time,
+                notes
+            });
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank', 'noopener');
+        }
+
+        function resetAppointmentForm() {
+            const form = document.getElementById('appointment-form');
+            const confirmation = document.getElementById('appointment-confirmation');
+            if (form) {
+                form.reset();
+                form.classList.remove('hidden');
+            }
+            if (confirmation) {
+                confirmation.classList.add('hidden');
+            }
+            const phoneInput = document.getElementById('appt-phone');
+            if (phoneInput) {
+                phoneInput.value = '+91 ';
+            }
+            const defaultSlotBtn = document.querySelector('#time-slots .time-slot-btn:nth-child(2)');
+            if (defaultSlotBtn) {
+                selectTimeSlot('12:00 PM', defaultSlotBtn);
+            }
+            setDefaultAppointmentDate();
+            lucide.createIcons();
+        }
+
+        function setAdminStatusFilter(status, btn) {
+            adminStatusFilter = status;
+            document.querySelectorAll('.admin-filter-btn').forEach(b => {
+                b.classList.remove('bg-indigo-600', 'text-white');
+                b.classList.add('bg-white/5', 'hover:bg-white/10', 'text-slate-300');
+            });
+            if (btn) {
+                btn.classList.add('bg-indigo-600', 'text-white');
+                btn.classList.remove('bg-white/5', 'hover:bg-white/10', 'text-slate-300');
+            }
+            renderAdminBookings();
+        }
+
+        function updateBookingStatus(bookingId, newStatus) {
+            appointmentBookings = appointmentBookings.map(item =>
+                item.id === bookingId ? { ...item, status: newStatus } : item
+            );
+            renderAdminBookings();
+        }
+
+        function deleteBooking(bookingId) {
+            appointmentBookings = appointmentBookings.filter(item => item.id !== bookingId);
+            updateAdminBadges();
+            renderAdminBookings();
+        }
+
+        function renderAdminBookings() {
+            const listEl = document.getElementById('admin-bookings-list');
+            if (!listEl) return;
+
+            const total = appointmentBookings.length;
+            const pending = appointmentBookings.filter(b => b.status === 'Pending').length;
+            const confirmed = appointmentBookings.filter(b => b.status === 'Confirmed').length;
+            const completed = appointmentBookings.filter(b => b.status === 'Completed').length;
+
+            document.getElementById('stat-total-bookings').textContent = total;
+            document.getElementById('stat-pending-bookings').textContent = pending;
+            document.getElementById('stat-confirmed-bookings').textContent = confirmed;
+            document.getElementById('stat-completed-bookings').textContent = completed;
+
+            const query = (document.getElementById('admin-search')?.value || '').trim().toLowerCase();
+            const filtered = appointmentBookings.filter(b => {
+                const matchesStatus = adminStatusFilter === 'all' || b.status === adminStatusFilter;
+                const haystack = `${b.bookingCode} ${b.name} ${b.phone} ${b.email} ${b.type} ${b.date} ${b.time} ${b.notes} ${b.status}`.toLowerCase();
+                const matchesQuery = !query || haystack.includes(query);
+                return matchesStatus && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 p-10 text-center space-y-2">
+                        <i data-lucide="calendar-x" class="w-8 h-8 text-slate-500 mx-auto"></i>
+                        <p class="text-sm font-semibold text-slate-300">No appointment bookings found</p>
+                        <p class="text-xs text-slate-500">New bookings submitted from the appointment form will appear here live.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(b => {
+                const clientPhoneDigits = (b.phone || '').replace(/[^\d]/g, '');
+                const clientWaHref = clientPhoneDigits ? `https://wa.me/${clientPhoneDigits}?text=${encodeURIComponent(`Hello ${b.name}, regarding your Nexus Studio appointment (${b.bookingCode}) on ${b.date} at ${b.time}.`)}` : '#';
+                const statusBadgeStyle =
+                    b.status === 'Confirmed'
+                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                        : b.status === 'Completed'
+                        ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
+                        : 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+
+                return `
+                    <div class="rounded-2xl bg-dark-800/80 border border-white/10 p-4 sm:p-5 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-white/10 pb-3">
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 font-mono text-xs font-bold text-cyan-300">${b.bookingCode}</span>
+                                <h4 class="text-base font-bold text-white">${b.name}</h4>
+                                <span class="px-2.5 py-0.5 rounded-full border text-xs font-bold ${statusBadgeStyle}">${b.status}</span>
+                            </div>
+                            <span class="text-xs text-slate-400">${b.createdAt || ''}</span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs text-slate-300">
+                            <div><span class="text-slate-500">Phone/WA:</span> <span class="font-semibold text-emerald-300">${b.phone || '-'}</span></div>
+                            <div><span class="text-slate-500">Email:</span> <span class="text-slate-200">${b.email || 'Not provided'}</span></div>
+                            <div><span class="text-slate-500">Website Type:</span> <span class="font-semibold text-indigo-300">${b.type}</span></div>
+                            <div><span class="text-slate-500">Slot:</span> <span class="font-semibold text-white">${b.date} • ${b.time}</span></div>
+                        </div>
+
+                        ${b.notes ? `<p class="text-xs text-slate-300 bg-white/[0.03] rounded-xl p-3 border border-white/5"><span class="text-slate-400 font-semibold">Notes:</span> ${b.notes}</p>` : ''}
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button type="button" onclick="updateBookingStatus('${b.id}', 'Pending')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-semibold">Pending</button>
+                                <button type="button" onclick="updateBookingStatus('${b.id}', 'Confirmed')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">Confirm</button>
+                                <button type="button" onclick="updateBookingStatus('${b.id}', 'Completed')" class="px-2.5 py-1.5 rounded-lg bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">Complete</button>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                ${clientPhoneDigits ? `<a href="${clientWaHref}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/35 border border-emerald-500/40 text-emerald-300 text-xs font-semibold inline-flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i> WhatsApp</a>` : ''}
+                                <button type="button" onclick="deleteBooking('${b.id}')" class="px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-xs font-semibold inline-flex items-center gap-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function exportBookingsCSV() {
+            const headers = ['Booking ID', 'Name', 'Phone', 'Email', 'Website Type', 'Date', 'Time', 'Status', 'Created At', 'Notes'];
+            const escapeCsv = (val) => `"${String(val || '').replace(/"/g, '""')}"`;
+            const rows = appointmentBookings.map(b => [
+                b.bookingCode, b.name, b.phone, b.email, b.type, b.date, b.time, b.status, b.createdAt, b.notes
+            ].map(escapeCsv).join(','));
+
+            const csvContent = [headers.map(escapeCsv).join(','), ...rows].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `nexus-bookings-${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function openPreviewModal(id) {
+            const item = templates.find(t => t.id === id);
+            if (!item) return;
+
+            document.getElementById('preview-badge').textContent = item.badge;
+            document.getElementById('preview-title').textContent = item.title;
+            document.getElementById('preview-img').src = item.image;
+            document.getElementById('preview-desc').textContent = item.desc;
+
+            const apptBtn = document.getElementById('preview-appt-btn');
+            apptBtn.onclick = () => {
+                closePreviewModal();
+                bookForWebsite(item.title);
+            };
+
+            const waText = encodeURIComponent(`Hello Nexus Studio! I viewed "${item.title}" and want to discuss it.`);
+            document.getElementById('preview-wa-btn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+
+            const modal = document.getElementById('preview-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePreviewModal() {
+            const modal = document.getElementById('preview-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            const pkg = document.getElementById('order-package').value;
+            const name = document.getElementById('order-name').value;
+
+            closeOrderModal();
+            document.getElementById('order-form').reset();
+
+            // Show Success Toast
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = `Thank you, ${name}!`;
+            document.getElementById('toast-msg').textContent = `Order for "${pkg}" received. We'll reach out shortly.`;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 5000);
+        }
+
+        // 6. BILINGUAL TOGGLE (ENGLISH / BENGALI)
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'bn' : 'en';
+            document.getElementById('lang-label').textContent = currentLang === 'en' ? 'বাংলা' : 'English';
+
+            document.querySelectorAll('[data-en][data-bn]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${currentLang}`);
+            });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 7. SCROLL REVEAL & NAVBAR BLUR ON SCROLL
+        function handleScroll() {
+            const scrollProgress = document.getElementById('scroll-progress');
+            if (scrollProgress) {
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progressPct = docHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / docHeight) * 100)) : 0;
+                scrollProgress.style.width = `${progressPct}%`;
+            }
+
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 30) {
+                navbar.classList.add('bg-dark-950/85', 'backdrop-blur-xl', 'border-white/10');
+                navbar.classList.remove('border-transparent');
+            } else {
+                navbar.classList.remove('bg-dark-950/85', 'backdrop-blur-xl', 'border-white/10');
+                navbar.classList.add('border-transparent');
+            }
+
+            document.querySelectorAll('.reveal').forEach((el, index) => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 60) {
+                    el.style.transitionDelay = `${Math.min(index * 45, 220)}ms`;
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        // Counter Animation
+        function animateCounters() {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let current = 0;
+                const increment = Math.ceil(target / 40);
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target + '+';
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = current + '+';
+                    }
+                }, 35);
+            });
+        }
+
+        // Initialize Everything on Window Load
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            animateParticles();
+            typeEffect();
+            initTiltCards();
+            initMagneticButtons();
+            setDefaultAppointmentDate();
+            handleScroll();
+            animateCounters();
+        });
+
+        window.addEventListener('scroll', handleScroll);
+    </script>
+
+    <!-- Firebase Cloud Storage & Live Bookings Sync -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9i05FPGYipaPRjUHxxwHf9XRmoM4djUU",
+            authDomain: "e-com-ad5db.firebaseapp.com",
+            projectId: "e-com-ad5db",
+            storageBucket: "e-com-ad5db.firebasestorage.app",
+            messagingSenderId: "154673920305",
+            appId: "1:154673920305:web:8b4909b84234972cb9d810",
+            measurementId: "G-3R16F2QCB1"
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nexus-studio-web';
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwncedd6Qn-L1HqDZUnqsDR4TjmipcrbN7tuwbnDv0vmMpF1CgsdPmIxOY4_jdzQdkAMw/exec";
+        const app = initializeApp(firebaseConfig);
+        try {
+            getAnalytics(app);
+        } catch (_) {}
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentUser = null;
+        let unsubscribeBookings = null;
+
+        function getBookingsCollectionRef() {
+            return collection(db, 'artifacts', appId, 'public', 'data', 'appointmentBookings');
+        }
+
+        function subscribeToCloudBookings(user) {
+            if (!user) return;
+            if (typeof unsubscribeBookings === 'function') {
+                unsubscribeBookings();
+            }
+            unsubscribeBookings = onSnapshot(getBookingsCollectionRef(), (snapshot) => {
+                const cloudList = [];
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data() || {};
+                    cloudList.push({
+                        id: data.id || docSnap.id,
+                        bookingCode: data.bookingCode || `APT-${String(docSnap.id).slice(-4)}`,
+                        name: data.name || '',
+                        phone: data.phone || '',
+                        email: data.email || '',
+                        type: data.type || 'Custom Animated Website',
+                        date: data.date || '',
+                        time: data.time || '12:00 PM',
+                        notes: data.notes || '',
+                        status: data.status || 'Pending',
+                        createdAt: data.createdAt || '',
+                        _createdTs: Number(String(data.id || '').replace('bk_', '')) || 0
+                    });
+                });
+                cloudList.sort((a, b) => b._createdTs - a._createdTs);
+                appointmentBookings = cloudList.map(({ _createdTs, ...rest }) => rest);
+                updateAdminBadges();
+                if (typeof isAdminAuthenticated !== 'undefined' && isAdminAuthenticated && typeof renderAdminBookings === 'function') {
+                    renderAdminBookings();
+                }
+            }, () => {
+                if (typeof setFirebaseSyncStatus === 'function') {
+                    setFirebaseSyncStatus('error', 'Firebase: Sync Error', 'ফায়ারবেস: সিঙ্ক ত্রুটি');
+                }
+            });
+        }
+
+        function setAppsScriptStatus(state, labelEn, labelBn) {
+            const el = document.getElementById('admin-script-status');
+            if (!el) return;
+            el.setAttribute('data-en', labelEn);
+            el.setAttribute('data-bn', labelBn);
+            el.textContent = currentLang === 'bn' ? labelBn : labelEn;
+            el.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-semibold ';
+            if (state === 'live') {
+                el.className += 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300';
+            } else if (state === 'error') {
+                el.className += 'bg-rose-500/15 border-rose-500/30 text-rose-300';
+            } else {
+                el.className += 'bg-indigo-500/15 border-indigo-500/30 text-indigo-300';
+            }
+        }
+
+        async function sendToGoogleAppsScript(action, payload) {
+            if (!GOOGLE_APPS_SCRIPT_URL) return;
+            setAppsScriptStatus('syncing', 'Apps Script: Sending...', 'অ্যাপস স্ক্রিপ্ট: পাঠানো হচ্ছে...');
+            const bookingData = payload || {};
+            const livePhoneInput = document.getElementById('appt-phone')?.value || '';
+            const rawPhone = (bookingData.phone || livePhoneInput || '').trim();
+            const normalizedPhone = typeof normalizePhoneWith91 === 'function'
+                ? normalizePhoneWith91(rawPhone).trim()
+                : rawPhone;
+            const sheetPayload = {
+                action,
+                source: 'nexus-studio',
+                syncedAt: new Date().toISOString(),
+                id: bookingData.id || '',
+                bookingCode: bookingData.bookingCode || '',
+                name: bookingData.name || '',
+                phone: normalizedPhone,
+                mobile: normalizedPhone,
+                phoneNumber: normalizedPhone,
+                whatsapp: normalizedPhone,
+                contact: normalizedPhone,
+                email: bookingData.email || '',
+                type: bookingData.type || '',
+                date: bookingData.date || '',
+                time: bookingData.time || '',
+                notes: bookingData.notes || '',
+                status: bookingData.status || 'Pending',
+                createdAt: bookingData.createdAt || new Date().toLocaleString(),
+                booking: {
+                    ...bookingData,
+                    phone: normalizedPhone,
+                    mobile: normalizedPhone
+                }
+            };
+            try {
+                await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    keepalive: true,
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(sheetPayload)
+                });
+                setAppsScriptStatus('live', 'Apps Script: Synced', 'অ্যাপস স্ক্রিপ্ট: সিঙ্কড');
+            } catch (_) {
+                setAppsScriptStatus('error', 'Apps Script: Retry Needed', 'অ্যাপস স্ক্রিপ্ট: পুনরায় চেষ্টা করুন');
+            }
+        }
+
+        // Override booking actions to persist in Firestore when authenticated
+        const originalHandleAppointmentSubmit = window.handleAppointmentSubmit;
+        window.handleAppointmentSubmit = async function(e) {
+            if (e && typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            const submitBtn = e && e.target ? e.target.querySelector('button[type="submit"]') : null;
+            if (submitBtn) submitBtn.disabled = true;
+
+            try {
+                if (typeof originalHandleAppointmentSubmit === 'function') {
+                    originalHandleAppointmentSubmit(e);
+                }
+                const latestBooking = appointmentBookings[0];
+                if (latestBooking && latestBooking.id) {
+                    setFirebaseSyncStatus('syncing', 'Firebase: Saving...', 'ফায়ারবেস: সেভ হচ্ছে...');
+                    const activeUser = await (typeof window.ensureFirebaseReady === 'function' ? window.ensureFirebaseReady() : Promise.resolve(currentUser));
+                    if (activeUser) {
+                        await setDoc(doc(getBookingsCollectionRef(), latestBooking.id), latestBooking);
+                        setFirebaseSyncStatus('live', 'Firebase: Live Synced', 'ফায়ারবেস: লাইভ সিঙ্কড');
+                    } else {
+                        setFirebaseSyncStatus('error', 'Firebase: Offline Mode', 'ফায়ারবেস: অফলাইন মোড');
+                    }
+                    await sendToGoogleAppsScript('create_booking', latestBooking);
+                }
+            } catch (_) {
+                setFirebaseSyncStatus('error', 'Firebase: Retry Needed', 'ফায়ারবেস: পুনরায় চেষ্টা করুন');
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        };
+
+        const originalUpdateBookingStatus = window.updateBookingStatus;
+        window.updateBookingStatus = async function(bookingId, newStatus) {
+            if (typeof originalUpdateBookingStatus === 'function') {
+                originalUpdateBookingStatus(bookingId, newStatus);
+            }
+            const targetBooking = appointmentBookings.find(item => item.id === bookingId) || { id: bookingId, status: newStatus };
+            const activeUser = await (typeof window.ensureFirebaseReady === 'function' ? window.ensureFirebaseReady() : Promise.resolve(currentUser));
+            if (activeUser && bookingId) {
+                try {
+                    await updateDoc(doc(getBookingsCollectionRef(), bookingId), { status: newStatus });
+                    setFirebaseSyncStatus('live', 'Firebase: Live Synced', 'ফায়ারবেস: লাইভ সিঙ্কড');
+                } catch (_) {
+                    setFirebaseSyncStatus('error', 'Firebase: Retry Needed', 'ফায়ারবেস: পুনরায় চেষ্টা করুন');
+                }
+            }
+            await sendToGoogleAppsScript('update_status', targetBooking);
+        };
+
+        const originalDeleteBooking = window.deleteBooking;
+        window.deleteBooking = async function(bookingId) {
+            const removedBooking = appointmentBookings.find(item => item.id === bookingId) || { id: bookingId };
+            if (typeof originalDeleteBooking === 'function') {
+                originalDeleteBooking(bookingId);
+            }
+            const activeUser = await (typeof window.ensureFirebaseReady === 'function' ? window.ensureFirebaseReady() : Promise.resolve(currentUser));
+            if (activeUser && bookingId) {
+                try {
+                    await deleteDoc(doc(getBookingsCollectionRef(), bookingId));
+                    setFirebaseSyncStatus('live', 'Firebase: Live Synced', 'ফায়ারবেস: লাইভ সিঙ্কড');
+                } catch (_) {
+                    setFirebaseSyncStatus('error', 'Firebase: Retry Needed', 'ফায়ারবেস: পুনরায় চেষ্টা করুন');
+                }
+            }
+            await sendToGoogleAppsScript('delete_booking', removedBooking);
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                setFirebaseSyncStatus('live', 'Firebase: Live Synced', 'ফায়ারবেস: লাইভ সিঙ্কড');
+                subscribeToCloudBookings(user);
+            }
+        });
+
+        window.ensureFirebaseReady = async function() {
+            if (auth.currentUser) {
+                currentUser = auth.currentUser;
+                return auth.currentUser;
+            }
+            try {
+                const cred = await signInAnonymously(auth);
+                currentUser = cred.user;
+                return cred.user;
+            } catch (_) {
+                return currentUser;
+            }
+        };
+
+        window.syncCloudBookingsNow = async function() {
+            const activeUser = await window.ensureFirebaseReady();
+            if (activeUser) {
+                setFirebaseSyncStatus('live', 'Firebase: Live Synced', 'ফায়ারবেস: লাইভ সিঙ্কড');
+                subscribeToCloudBookings(activeUser);
+            }
+        };
+
+        (async function initFirebaseAuth() {
+            try {
+                if (!auth.currentUser) {
+                    await signInAnonymously(auth);
+                }
+                if (auth.currentUser) {
+                    currentUser = auth.currentUser;
+                    setFirebaseSyncStatus('live', 'Firebase: Live Synced', 'ফায়ারবেস: লাইভ সিঙ্কড');
+                    subscribeToCloudBookings(auth.currentUser);
+                }
+            } catch (_) {
+                setFirebaseSyncStatus('error', 'Firebase: Auth Check', 'ফায়ারবেস: অথ চেক করুন');
+            }
+        })();
+    </script>
+</body>
+</html>
